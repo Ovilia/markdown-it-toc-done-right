@@ -26,7 +26,7 @@ function tocPlugin (md, options) {
   options = Object.assign({}, {
     placeholder: '(\\$\\{toc\\}|\\[\\[?_?toc_?\\]?\\]|\\$\\<toc(\\{[^}]*\\})\\>)',
     slugify: slugify,
-    href: null,
+    hash: null,
     containerClass: 'table-of-contents',
     containerId: undefined,
     listClass: undefined,
@@ -132,7 +132,7 @@ function tocPlugin (md, options) {
       }
       tree.c.forEach(node => {
         if (isLevelSelected(node.l)) {
-          buffer += (`<li${itemClass}><a${linkClass} href="${unique(options.href ? options.href(node.n) : '#' + options.slugify(node.n))}">${typeof _options.format === 'function' ? _options.format(node.n, htmlencode) : htmlencode(node.n)}</a>${ast2html(node)}</li>`)
+          buffer += (`<li${itemClass}><a${linkClass} href="${options.hash ? "javascript:;" : '#' + unique(options.slugify(node.n))}" onclick="${options.hash ? "location.hash='" + options.hash(node.n) + "'" : ''}">${typeof _options.format === 'function' ? _options.format(node.n, htmlencode) : htmlencode(node.n)}</a>${ast2html(node)}</li>`)
         } else {
           // unique(options.slugify(node.n))
           buffer += ast2html(node)
